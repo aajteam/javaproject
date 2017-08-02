@@ -70,8 +70,6 @@ pipeline {
         echo "setting identity"
         sh 'git config --global user.name "Jahanzeb"'
         sh 'git config --global user.email "jahanzeb.khan@aaj.tv"'
-        echo 'Git commit'
-        sh 'git commit -am "commit from development"'
         echo 'Merging Dev into Master'
         sh 'git merge development'
         echo 'Pushing to Origin Master'
