@@ -68,8 +68,8 @@ pipeline {
         echo 'Checking Out Master Branch'
         sh 'git checkout master'
         echo "setting identity"
-        sh 'git config --global user.name "Jahanzeb"'
-        sh 'git config --global user.email "jahanzeb.khan@aaj.tv"'
+        sh 'git config --global user.name "root"'
+        sh 'git config --global user.email "root@server2.example.com"'
         echo 'Merging Dev into Master'
         sh 'git merge development'
         echo 'Pushing to Origin Master'
