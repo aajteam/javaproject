@@ -73,7 +73,7 @@ pipeline {
         echo 'Merging Dev into Master'
         sh 'git merge development'
         echo 'Pushing to Origin Master'
-        sh 'git push origin master'
+        sh 'git push https://aajteam:jahanz3b@github.com/aajteam/javaproject.git master'
       }
     }
   }
