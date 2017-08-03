@@ -38,7 +38,7 @@ pipeline {
         label 'Slave1'
         }
       steps {
-      sh "wget http://5b3227bf.ngrok.io/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
+      sh "wget http://3833d95b.ngrok.io/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
       sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
       }
     }
@@ -67,6 +67,9 @@ pipeline {
         sh 'git checkout development'
         echo 'Checking Out Master Branch'
         sh 'git checkout master'
+        echo "setting identity"
+        sh 'git config --global user.name "Jahanzeb"'
+        sh 'git config --global user.email "jahanzeb.khan@aaj.tv"'
         echo 'Merging Dev into Master'
         sh 'git merge development'
         echo 'Pushing to Origin Master'
