@@ -67,7 +67,7 @@ pipeline {
         sh 'git checkout development'
         echo 'Checking Out Master Branch'
         sh 'git checkout master'
-        echo "setting identity"
+        echo "setting user identity"
         sh 'git config --global user.name "root"'
         sh 'git config --global user.email "root@server2.example.com"'
         echo 'Merging Dev into Master'
