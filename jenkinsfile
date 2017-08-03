@@ -38,7 +38,7 @@ pipeline {
         label 'Slave1'
         }
       steps {
-      sh "wget http://5b3227bf.ngrok.io/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
+      sh "wget http://3833d95b.ngrok.io/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
       sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
       }
     }
