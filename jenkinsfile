@@ -1,6 +1,9 @@
 pipeline {
   agent none
 
+  environment {
+    MAJOR_VERSION = 1
+  }
     stages {
     stage('Unit Tests') {
       agent {
@@ -29,8 +32,8 @@ pipeline {
        label 'apache'
     }
       steps {
-      sh "mkdir /var/www/html/rectangles/all/${env.BRANCH_NAME}"
-      sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}/"
+      sh "if ![ -d '/var/www/html/rectangles/all/${env.BRANCH_NAME}' ]; then mkdir /var/www/html/rectangles/all/${env.BRANCH_NAME}"
+      sh "cp dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}/"
       }
     }
     stage("Running on Slave") {
@@ -38,8 +41,8 @@ pipeline {
         label 'Slave1'
         }
       steps {
-      sh "wget http://3833d95b.ngrok.io/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
-      sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
+      sh "wget http://fb4a82de.ngrok.io/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
+      sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 3 4"
       }
     }
     stage("Promote to Green") {
@@ -50,7 +53,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        sh "cp /var/www/html/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/rectangle_${env.BUILD_NUMBER}.jar"
+        sh "cp /var/www/html/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
       }
     }
     stage("Promote Dev to Master") {
@@ -66,6 +69,7 @@ pipeline {
         echo 'Checking Out Development Branch'
         sh 'git checkout development'
         echo 'Checking Out Master Branch'
+        sh 'git pull origin'
         sh 'git checkout master'
         echo "setting user identity"
         sh 'git config --global user.name "root"'
@@ -74,6 +78,9 @@ pipeline {
         sh 'git merge development'
         echo 'Pushing to Origin Master'
         sh 'git push https://aajteam:jahanz3b@github.com/aajteam/javaproject.git master'
+        echo 'Tagging the Release'
+        sh "git tag rectangle-${env.MAJOR_VERSION}.${env.BUILD_NUMBER}"
+        sh 'git push https://aajteam:jahanz3b@github.com/aajteam/javaproject.git rectangle-${env.MAJOR_VERSION}.${env.BUILD_NUMBER}'
       }
     }
   }
